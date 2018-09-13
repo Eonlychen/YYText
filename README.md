@@ -1,11 +1,36 @@
 
-解决 YYLabel父视图上存在手势，点击高亮部分不响应的问题；
+解决 YYLabel父视图上存在手势，点击高亮部分不响应的问题；也就是暴露出来他的方法，方便自己也方便他人；
 ==============
-也就是暴露出来他的方法，方便自己也方便他人；
+
+可直接使用cocoapod导入此依赖；
 ==============
+
 使用：
 ==============
 pod 'YYText', :git => 'https://github.com/Eonlychen/YYText.git'
+
+
+暴露的方法：
+==============
+- (YYTextHighlight *)_getHighlightAtPoint:(CGPoint)point range:(NSRangePointer)range;
+
+需要做的事情（作者ibireme已经写明解决方案）：
+==============
+在父视图view 遵循 UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isMemberOfClass:YYLabel.class]) {
+        YYLabel *label = (YYLabel *)touch.view;
+        CGPoint touchPoint = [touch locationInView:label];
+        NSRange highlightRange;
+        YYTextHighlight *textHighlight = [label _getHighlightAtPoint:touchPoint range:&highlightRange];
+        if (textHighlight) {
+            //此处写高亮触发事件即可；
+            return false;
+        }
+        return true;
+    }
+    return true;
+}
 
 
 
