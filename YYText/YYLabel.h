@@ -338,7 +338,7 @@ NS_ASSUME_NONNULL_BEGIN
         YYTextHighlight *textHighlight = [label _getHighlightAtPoint:touchPoint range:&highlightRange];
         
         if (textHighlight) {
-            //此处写高亮触发事件即可
+            //此处写高亮触发事件即可；
             return false;
         }
         return true;
