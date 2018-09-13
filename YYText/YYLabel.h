@@ -328,7 +328,25 @@ NS_ASSUME_NONNULL_BEGIN
     });
  
  */
-
+/**
+*  暴露此方法，防止yylabel的俯视图上存在手势，高亮点击没响应的问题；
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isMemberOfClass:YYLabel.class]) {
+        YYLabel *label = (YYLabel *)touch.view;
+        CGPoint touchPoint = [touch locationInView:label];
+        NSRange highlightRange;
+        YYTextHighlight *textHighlight = [label _getHighlightAtPoint:touchPoint range:&highlightRange];
+        
+        if (textHighlight) {
+            //此处写高亮触发事件即可
+            return false;
+        }
+        return true;
+    }
+    return true;
+}
+*/
+- (YYTextHighlight *)_getHighlightAtPoint:(CGPoint)point range:(NSRangePointer)range;
 @end
 
 
